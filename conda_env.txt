@@ -1,0 +1,1 @@
+conda create -n RefMAAP medaka python gooey tabulate pandas fastqc multiqc bioconductor-decipher -y
