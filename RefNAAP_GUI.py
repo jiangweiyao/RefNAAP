@@ -26,7 +26,7 @@ def main():
     cli = GooeyParser(description="Reference Based Minion Amplicon Analysis Pipeline")
     required_args = cli.add_argument_group("Input Output Location", gooey_options={'columns': 1, 'show_border': True})
     required_args.add_argument('--InputFolder', help="Folder containing barcoded fastq", required=True, widget='DirChooser')
-    required_args.add_argument('--OutputFolder', help="Output Folder", required=False, default=f'~/refmaap_results/output_{now}', widget='DirChooser')
+    required_args.add_argument('--OutputFolder', help="Output Folder", required=False, default=f'~/refnaap_results/output_{now}', widget='DirChooser')
     required_args.add_argument('--RefFile', help="Reference File ", required=False, default=f'{local_path}/Americas2.fasta', widget='FileChooser')
 
     parser = cli.add_argument_group("Optional Arguments", gooey_options={'columns': 2, 'show_border': True})
