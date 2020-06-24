@@ -30,7 +30,7 @@ def main():
     required_args.add_argument('--RefFile', help="Reference File ", required=False, default=f'{local_path}/Americas2.fasta', widget='FileChooser')
 
     parser = cli.add_argument_group("Optional Arguments", gooey_options={'columns': 2, 'show_border': True})
-    parser.add_argument('--TopN', help="Keep top N of the amplicon clusters generated from cdhit ", type=int, required=False, default=1)
+    parser.add_argument('--TopN', help="The top N reference sequences with the most depth are analyzed.", type=int, required=False, default=1)
     parser.add_argument('--MinCov', help="Amplicon regions need a minimum of this average coverage number", type=int, required=False, default=10)
     parser.add_argument('--threads', help="Number of threads. More is faster if your computer supports it", type=int, required=False, default=4)
     parser.add_argument('--verbose', help = "Keep Intermediate Files", required=False, widget='BlockCheckbox', action='store_true', gooey_options={ 'checkbox_label': "Yes" })
