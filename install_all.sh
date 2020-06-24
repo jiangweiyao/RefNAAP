@@ -12,4 +12,4 @@ conda config --add channels conda-forge
 . ~/.bashrc
 rm Miniconda3-latest-Linux-x86_64.sh
 
-conda create -n RefMAAP medaka python gooey tabulate pandas fastqc multiqc bioconductor-decipher -y
+conda create -n RefNAAP medaka python gooey tabulate pandas fastqc multiqc bioconductor-decipher -y
