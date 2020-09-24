@@ -34,7 +34,7 @@ def main():
     parser.add_argument('--MinCov', help="Amplicon regions need a minimum of this average coverage number", type=int, required=False, default=10)
     parser.add_argument('--threads', help="Number of threads. More is faster if your computer supports it", type=int, required=False, default=4)
     parser.add_argument('--verbose', help = "Keep Intermediate Files", required=False, widget='BlockCheckbox', action='store_true', gooey_options={ 'checkbox_label': "Yes" })
-    parser.add_argument('--model', help="Basecall Model", required=False, type=str, default='r10_min_high_g303')
+    parser.add_argument('--model', help="Basecall Model", required=False, type=str, default='r941_min_high_g303')
     args = cli.parse_args()
 
     files = sorted([f for f in glob.glob(args.InputFolder+"/**", recursive = True) if re.search(r'(.*)\.((fastq|fq)(|\.gz))$', f)])   
@@ -85,35 +85,11 @@ def main():
         f.write(medaka_cmd+'\n')
         os.system(medaka_cmd)
 
-        gapfixer_cmd = f"{gapfixer_helper} {assembly_dir}/{base}_scaffold.fasta {assembly_dir}/{base}_medaka/consensus.fasta {assembly_dir}/{base}_gapfixed.fasta"
+        gapfixer_cmd = f"{gapfixer_helper} {assembly_dir}/{base}_scaffold.fasta {assembly_dir}/{base}_medaka/consensus.fasta {assembly_dir}/{base}_final.fasta"
         f.write(gapfixer_cmd+'\n')
         os.system(gapfixer_cmd)
-
-        medaka2_cmd = f"medaka_consensus -i {filec} -d {assembly_dir}/{base}_gapfixed.fasta -o {assembly_dir}/{base}_medaka2 -m {args.model} -t {args.threads}"
-        f.write(medaka2_cmd+'\n')
-        os.system(medaka2_cmd)
-
-        bcf_pileup_cmd = f"bcftools mpileup -f {assembly_dir}/{base}_gapfixed.fasta {assembly_dir}/{base}_medaka2/calls_to_draft.bam | bcftools call -mv -Oz -o {assembly_dir}/{base}.vcf.gz --ploidy 1"
-        f.write(bcf_pileup_cmd+'\n')
-        os.system(bcf_pileup_cmd)
-
-        bcf_index_cmd = f"bcftools index {assembly_dir}/{base}.vcf.gz"
-        f.write(bcf_index_cmd+'\n')
-        os.system(bcf_index_cmd)
-
-        bcf_consensus = f"cat {assembly_dir}/{base}_gapfixed.fasta | bcftools consensus {assembly_dir}/{base}.vcf.gz -H 1 > {assembly_dir}/{base}_Nscaffold.fasta"
-        f.write(bcf_consensus+'\n')
-        os.system(bcf_consensus)
-
-#        medaka3_cmd = f"medaka_consensus -i {filec} -d {assembly_dir}/{base}_Nscaffold.fasta -o {assembly_dir}/{base}_medaka3 -m {args.model} -t {args.threads}"
-#        f.write(medaka3_cmd+'\n')
-#        os.system(medaka3_cmd)
-
-#        cp_cmd = f"cp {assembly_dir}/{base}_medaka3/consensus.fasta {OutputFolder}/{base}_final.fasta"
-#        f.write(cp_cmd+'\n')
-#        os.system(cp_cmd)
-
-        cp_cmd = f"cp {assembly_dir}/{base}_Nscaffold.fasta {OutputFolder}/{base}_final.fasta"
+        
+        cp_cmd = f"cp {assembly_dir}/{base}_final.fasta {OutputFolder}/{base}_final.fasta"
         f.write(cp_cmd+'\n')
         os.system(cp_cmd)
 
